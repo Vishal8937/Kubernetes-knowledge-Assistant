@@ -1,13 +1,14 @@
 # ==============================================================================
 # ENTERPRISE AGENTIC RAG - REQUIREMENTS (Local, No GCP)
 # ==============================================================================
+# Stage 6 — Evals (final). Grows one stage at a time as the course progresses.
 
 # --- CORE API & WEB FRAMEWORK ---
 fastapi                     # High-performance web framework for the API
 uvicorn[standard]           # ASGI server to run the FastAPI app
 python-dotenv               # For loading configuration from .env files
 requests                    # HTTP library for internal/external API calls
-streamlit                   # Frontend dashboard for the chat interface
+streamlit                   # Frontend chat interface + eval demo app
 numpy                       # Numerical processing
 pytz                        # Timezone handling for logs
 nest-asyncio                # Support for nested async loops in notebooks/streamlit
@@ -23,9 +24,8 @@ flashrank                   # Ultra-fast local cross-encoder for semantic rerank
 # --- LANGCHAIN & AGENTIC ORCHESTRATION ---
 langchain                   # Core LLM orchestration
 langgraph                   # State-machine logic for cyclic agent flows
-langchain-groq              # Integration for lightning-fast Llama 3.3 models
-langchain-google-vertexai   # Required shim for NeMo Guardrails internal import (no GCP credentials needed)
-langchain-community         # Community-contributed tools and loaders
+langchain-groq              # Integration for lightning-fast Llama 3.3 models (still used by the guardrails classifier)
+langchain-community==0.3.31        # Community-contributed tools and loaders
 langchain-openai            # OpenAI-compatible layer (used by Portkey gateway)
 pydantic>=2.0.0             # Data validation and settings management
 
@@ -42,20 +42,20 @@ langsmith                   # Specialized tracing for LangChain/LangGraph
 logfire[fastapi,requests]   # Pydantic Logfire — FastAPI + requests instrumentation
 loguru                      # Enhanced logging for Python
 
+# --- EMBEDDINGS (SENTENCE TRANSFORMERS) ---
+sentence-transformers       # Used by FlashRank reranker internally
+
 # --- GUARDRAILS ---
 nemoguardrails              # NVIDIA NeMo Guardrails for input/output safety rails
 langchain-nvidia-ai-endpoints # LangChain integration with NVIDIA AI Endpoints
+langchain-google-vertexai   # Required shim for NeMo Guardrails internal import (no GCP credentials needed)
 
 # --- LLM GATEWAY ---
 portkey-ai                  # Portkey Gateway for unified LLM routing, fallbacks & observability
 
 # --- EVALUATION (EVALS) ---
-ragas                       # RAG-specific evaluation metrics (Faithfulness, Relevancy, Recall)q
+ragas                       # RAG-specific evaluation metrics (Faithfulness, Relevancy, Recall)
 deepeval                    # Pytest-compatible test runner wrapping RAGAS & safety metrics
 langfuse                    # Live production monitoring, tracing & user feedback collection
-
-# --- EMBEDDINGS (SENTENCE TRANSFORMERS) ---
-sentence-transformers       # Used by FlashRank reranker internally
-langchain_google_genai
-
-langchain-google-vertexai
+pandas                      # DataFrames for the eval Streamlit app's result tables
+openai                      # AsyncOpenAI client used directly by the RAGAS judge LLM
